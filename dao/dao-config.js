@@ -1,10 +1,12 @@
+'use strict'
+
 module.exports = {
     client: 'mysql',
     connection: {
         localhost:'localhost',
         user: 'root',
         password:'',
-        database: 'tenisdemesa_nave'
+        database: 'locadora'
     },
     useNullAsDefault: true,    
 }
