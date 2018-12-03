@@ -1,6 +1,6 @@
 'use strict'
 
-import Filme from '../models/Filme';
+import filmeRepo from '../repositories/filmeRepository';
 
 class FilmeController{
 
@@ -8,23 +8,20 @@ class FilmeController{
 
     async findDisponivel (req, res) {
         try {
-            const filme = await Filme.where({"flgDisponivel": 1}).fetchAll()
-            return res.json({filme})
+            const filme = await new filmeRepo().findDisponivel()
+            res.status(201).send(filme);
         } catch (err) {
             console.log(err);
             return res.status(400).send({
-                error: 'Erro ao listar competidor'
+                error: 'Erro ao listar filmes disponiveis'
             });
         }
     }
 
     async findLikeTitulo (req, res) {
         try {
-            const filme = await Filme.query( qb => {
-                qb.where({"flgDisponivel": 1}).andWhere('titulo', 'LIKE', `%${req.body.titulo}%`)
-            }).fetchAll()
-
-            return res.json({filme})
+            const filme = await new filmeRepo().findLikeTitulo(req.body.titulo)
+            res.status(201).send(filme);
         } catch (err) {
             console.log(err);
             return res.status(400).send({
