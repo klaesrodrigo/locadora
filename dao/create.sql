@@ -22,9 +22,11 @@ CREATE TABLE IF NOT EXISTS `locadora`.`filme` (
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `locadora`.`usuario_has_filme` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `usuario_id` INT NOT NULL,
   `filme_id` INT NOT NULL,
-  PRIMARY KEY (`usuario_id`, `filme_id`),
+  `flgDevolvido` TINYINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`, `usuario_id`, `filme_id`),
   INDEX `fk_usuario_has_filme_filme1_idx` (`filme_id` ASC),
   INDEX `fk_usuario_has_filme_usuario_idx` (`usuario_id` ASC),
   CONSTRAINT `fk_usuario_has_filme_usuario`
