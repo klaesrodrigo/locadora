@@ -1,172 +1,22 @@
-import Competidor from '../models/Competidor';
-import Partidas from '../models/Partidas';
+'use strict'
 
-export default {
-    getCompetidor: (req, res) => {
+import UsuarioRepo from '../repositories/usuarioRepository'
+
+class UsuarioController {
+    constructor() {}
+
+    async createUsuario(req, res) {
         try {
-            Competidor
-                .fetchAll()
-                .then(competidor => res.json({
-                    competidor
-                }))
-                .catch(err => {
-                    console.log(err);
-                    res.status(400).send({
-                        err
-                    });
-                });
+            const usuario = await new UsuarioRepo().createUsuario(req.body)
+            return res.status(201).send(usuario)
         } catch (err) {
             console.log(err);
             return res.status(400).send({
-                error: 'Erro ao listar competidores'
-            });
-        }
-    },
-    getCompetidorBy: (req, res) => {
-        try {
-            Competidor
-                .where(req.params)
-                .fetchAll({
-                    withRelated: "campeonato"
-                })
-                .then(competidor => res.json({
-                    competidor
-                }))
-                .catch(err => {
-                    console.log(err);
-                    res.status(400).send({
-                        err
-                    });
-                });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).send({
-                error: 'Erro ao listar competidor'
-            });
-        }
-    },
-    postCompetidor: (req, res) => {
-        try {
-            new Competidor(req.body)
-                .save()
-                .then(saved => res.json({
-                    saved
-                }))
-                .catch(err => {
-                    console.log(err);
-                    res.status(400).send({
-                        err
-                    });
-                });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).send({
-                error: 'Erro ao inserir competidor'
-            });
-        }
-    },
-    putCompetidor: (req, res) => {
-        try {
-            Competidor
-                .where(req.params)
-                .fetch()
-                .then(Competidor => {
-                    Competidor
-                        .save(req.body)
-                        .then(saved => res.json({
-                            saved
-                        }));
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(400).send({
-                        err
-                    });
-                });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).send({
-                error: 'Erro ao alterar competidor'
-            });
-        }
-    },
-    deleteCompetidor: (req, res) => {
-        try {
-            Competidor
-                .where(req.params)
-                .destroy()
-                .then(destroyed => res.json({
-                    destroyed
-                }))
-                .catch(err => {
-                    console.log(err);
-                    res.status(400).send({
-                        err
-                    });
-                });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).send({
-                error: 'Erro ao deletar competidor'
-            });
-        }
-    },
-    getCompetidorCampeonato: (req, res) => {
-        try {
-            let competidores = [];
-            Competidor
-                .query(function (qb) {
-                    qb.innerJoin('competidor_campeonato', 'competidor.id', 'competidor_campeonato.competidor_id');
-                    qb.where('competidor_campeonato.campeonato_id', '=', req.params.campeonato_id);
-                })
-                .fetchAll()
-                .then(data => {
-                    if (data.length < 2) {
-                        res.send("O número minímo de competidores para gerar partidas é de 2")
-                    } else {
-                        data.forEach(element => {
-                            if (element.id != req.body.competidor_id){
-                                competidores.push(element.id);
-                                console.log("elemento: " + element.id + " - Body: " + req.body.competidor_id);
-                            }
-                        });
-                        for (let i = 0; i < competidores.length; i++) {
-                            const idComp = req.body.competidor_id;
-                            let idAdv = competidores[i];
-                            const body = {
-                                status: "Aguardando",
-                                campeonato_id: req.params.campeonato_id,
-                                resultado: ""
-                            }
-                            let partidas = new Partidas(body);
-                            partidas
-                                .save()
-                                .then(saved => {
-                                    const func = partidas.competidor();
-                                    Promise.all([
-                                        func.attach(idComp),
-                                        func.attach(idAdv)
-                                        ]
-                                      ).then(result => {
-                                        console.log('----');
-                                      });
-                                })
-                        }
-                    }
-                    res.send("ok");
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(400).send({
-                        err
-                    });
-                });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).send({
-                error: 'Erro ao deletar competidor'
+                error: 'Erro ao criar usuario'
             });
         }
     }
 
-};
+}
+
+export default UsuarioController
