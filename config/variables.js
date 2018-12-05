@@ -1,4 +1,6 @@
 'use strict'
+
+//Arquivo onde ficam armazenados as variables do sistema
 const variables = {
     api: {
         port: process.env.port || 3000

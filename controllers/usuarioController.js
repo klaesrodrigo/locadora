@@ -5,6 +5,8 @@ import UsuarioRepo from '../repositories/usuarioRepository'
 class UsuarioController {
     constructor() {}
 
+    //Tratamento de exceção dos metodos do repository
+    //Trata as respostas e envia os status corretos
     async createUsuario(req, res) {
         try {
             const usuario = await new UsuarioRepo().createUsuario(req.body)
@@ -12,15 +14,18 @@ class UsuarioController {
         } catch (err) {
             console.log(err);
             return res.status(500).send({
-                error: 'Erro ao criar usuario'
+                error: 'Erro ao criar usuário'
             });
         }
     }
 
+    //Tratamento de exceção dos metodos do repository
+    //Trata as respostas e envia os status corretos
     async logon(req, res){
         try {
             const usuario = await new UsuarioRepo().logon(req.body)
             
+            //Verifica se a resposta é um usuário
             if(usuario)
                 return res.status(200).send(usuario)
             else
@@ -28,16 +33,18 @@ class UsuarioController {
         } catch (err) {
             console.log(err);
             return res.status(500).send({
-                error: 'Erro ao logar usuario'
+                error: 'Erro ao logar usuário'
             });
         }
     }
 
+    //Tratamento de exceção dos metodos do repository
+    //Trata as respostas e envia os status corretos
     async logoff(req, res){
         try {
             let token = req.headers['token']
-            const usuario = await new UsuarioRepo().logoff(req.body, token)
-            
+            const usuario = await new UsuarioRepo().logoff(token) 
+            //Verifica se a resposta é um usuário
             if(usuario)
                 return res.status(200).send({message: 'Usuário deslogado'})
             else
@@ -45,7 +52,7 @@ class UsuarioController {
         } catch (err) {
             console.log(err);
             return res.status(500).send({
-                error: 'Erro fazer logoff usuario'
+                error: 'Erro fazer logoff usuário'
             });
         }
     }
