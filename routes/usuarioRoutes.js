@@ -1,13 +1,14 @@
 'use strick'
 
-import {Router} from "express"
+import { Router } from "express"
+import Usuario from '../controllers/usuarioController'
+import { authorize } from "../services/authService";
 
 const routes = Router()
+const usuario = new Usuario();
 
-import Usuario from '../controllers/usuarioController'
+routes.post('/usuario', usuario.createUsuario)
+      .post('/logon', usuario.logon)
+      .post('/logoff', authorize, usuario.logoff)
 
-let usuario = new Usuario();
-
-routes.post('/', usuario.createUsuario)
-
-module.exports = app => app.use('/usuario', routes);
+module.exports = app => app.use('/', routes);

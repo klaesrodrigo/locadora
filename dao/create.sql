@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `locadora`.`usuario` (
   `nome` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
+  `token` VARCHAR(200),
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;

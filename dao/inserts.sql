@@ -1,5 +1,4 @@
-INSERT INTO usuario (nome,email,senha) VALUES ('Rodrigo', 'rodrigo@email', '123123'); 
-INSERT INTO usuario (nome,email,senha) VALUES ('Fabio', 'fabil@email', 'asdasd'); 
+USE locadora,
 
 INSERT INTO filme (titulo,diretor) VALUES ('Uma noite no museo', 'Shawn Levy'); 
 INSERT INTO filme (titulo,diretor) VALUES ('Uma noite no museo', 'Shawn Levy'); 
